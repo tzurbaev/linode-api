@@ -48,17 +48,15 @@ abstract class LinodeApiResource extends ApiResource
      */
     public function update(array $payload): bool
     {
-        $response = null;
-
         try {
             $response = $this->getHttpClient()->request('PUT', $this->apiUrl(), [
                 'json' => $payload,
             ]);
+
+            $this->data = json_decode((string) $response->getBody(), true);
         } catch (RequestException $e) {
             $this->throwResourceException($e->getResponse(), 'update', UpdateResourceException::class);
         }
-
-        $this->data = json_decode((string) $response->getBody(), true);
 
         return true;
     }

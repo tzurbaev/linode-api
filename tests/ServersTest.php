@@ -16,6 +16,8 @@ use Linode\Api\Linode;
 use Linode\Api\Servers\Server;
 use Linode\Api\Tests\Helpers\Api;
 use Linode\Api\Tests\Helpers\Endpoints;
+use Linode\Api\Volumes\Volume;
+use Linode\Api\Volumes\VolumesManager;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Zurbaev\ApiClient\Helpers\FakeResponse;
@@ -165,7 +167,7 @@ class ServersTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('POST', 'linode/instances/'.$data['id'].'/boot', ['json' => []])
+                ->with('POST', 'linode/instances/'.$data['id'].'/boot')
                 ->andReturn(FakeResponse::fake()->withJson([])->toResponse());
         });
 
@@ -234,7 +236,7 @@ class ServersTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('POST', 'linode/instances/'.$data['id'].'/kvmify', ['json' => []])
+                ->with('POST', 'linode/instances/'.$data['id'].'/kvmify')
                 ->andReturn(FakeResponse::fake()->withJson([])->toResponse());
         });
 
@@ -261,7 +263,7 @@ class ServersTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('POST', 'linode/instances/'.$data['id'].'/mutate', ['json' => []])
+                ->with('POST', 'linode/instances/'.$data['id'].'/mutate')
                 ->andReturn(FakeResponse::fake()->withJson([])->toResponse());
         });
 
@@ -289,7 +291,7 @@ class ServersTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('POST', 'linode/instances/'.$data['id'].'/reboot', ['json' => []])
+                ->with('POST', 'linode/instances/'.$data['id'].'/reboot')
                 ->andReturn(FakeResponse::fake()->withJson([])->toResponse());
 
             $http->shouldReceive('request')
@@ -427,7 +429,7 @@ class ServersTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('POST', 'linode/instances/'.$data['id'].'/shutdown', ['json' => []])
+                ->with('POST', 'linode/instances/'.$data['id'].'/shutdown')
                 ->andReturn(FakeResponse::fake()->withJson([])->toResponse());
         });
 
@@ -437,6 +439,40 @@ class ServersTest extends TestCase
         $this->assertTrue(
             $linode->execute(new ShutdownCommand())->on($server)
         );
+    }
+
+    /**
+     * @dataProvider getServerDataProvider
+     *
+     * @param array $data
+     */
+    public function testListServerVolumes(array $data)
+    {
+        $volumesList = Endpoints::volumesList();
+
+        $api = Api::fake(function (MockInterface $http) use ($data, $volumesList) {
+            $http->shouldReceive('request')
+                ->with('GET', 'linode/instances/'.$data['id'])
+                ->andReturn(
+                    FakeResponse::fake()->withJson($data)->toResponse()
+                );
+
+            $http->shouldReceive('request')
+                ->with('GET', 'linode/instances/'.$data['id'].'/volumes')
+                ->andReturn(
+                    FakeResponse::fake()->withJson($volumesList)->toResponse()
+                );
+        });
+
+        $linode = new Linode($api);
+        $server = $linode->get($data['id']);
+
+        $volumes = (new VolumesManager())->list()->from($server);
+        $this->assertInternalType('array', $volumes);
+
+        foreach ($volumes as $volume) {
+            $this->assertInstanceOf(Volume::class, $volume);
+        }
     }
 
     public function listServersDataProvider()

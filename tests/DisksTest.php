@@ -26,7 +26,7 @@ class DisksTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('GET', 'linode/instances/'.$serverData['id'].'/disks', ['json' => []])
+                ->with('GET', 'linode/instances/'.$serverData['id'].'/disks')
                 ->andReturn(
                     FakeResponse::fake()->withJson($disksData)->toResponse()
                 );
@@ -56,7 +56,7 @@ class DisksTest extends TestCase
                 );
 
             $http->shouldReceive('request')
-                ->with('GET', 'linode/instances/'.$serverData['id'].'/disks/'.$diskData['id'], ['json' => []])
+                ->with('GET', 'linode/instances/'.$serverData['id'].'/disks/'.$diskData['id'])
                 ->andReturn(
                     FakeResponse::fake()->withJson($diskData)->toResponse()
                 );
@@ -69,5 +69,73 @@ class DisksTest extends TestCase
 
         $this->assertInstanceOf(Disk::class, $disk);
         $this->assertSame($diskData['id'], $disk->id());
+    }
+
+    public function testResetRootPassword()
+    {
+        $serverData = Endpoints::instanceItem();
+        $diskData = Endpoints::diskItem();
+        $payload = ['password' => 'secret'];
+
+        $api = Api::fake(function (MockInterface $http) use ($serverData, $diskData, $payload) {
+            $http->shouldReceive('request')
+                ->with('GET', 'linode/instances/'.$serverData['id'])
+                ->andReturn(
+                    FakeResponse::fake()->withJson($serverData)->toResponse()
+                );
+
+            $http->shouldReceive('request')
+                ->with('GET', 'linode/instances/'.$serverData['id'].'/disks/'.$diskData['id'])
+                ->andReturn(
+                    FakeResponse::fake()->withJson($diskData)->toResponse()
+                );
+
+            $http->shouldReceive('request')
+                ->with('POST', 'linode/instances/'.$serverData['id'].'/disks/'.$diskData['id'].'/password', ['json' => $payload])
+                ->andReturn(
+                    FakeResponse::fake()->withJson([])->toResponse()
+                );
+        });
+
+        $linode = new Linode($api);
+        $manager = new DisksManager();
+        $server = $linode->get($serverData['id']);
+        $disk = $manager->get($diskData['id'])->from($server);
+
+        $this->assertTrue($manager->resetPassword('secret')->on($disk));
+    }
+
+    public function testResizeDisk()
+    {
+        $serverData = Endpoints::instanceItem();
+        $diskData = Endpoints::diskItem();
+        $payload = ['size' => 2048];
+
+        $api = Api::fake(function (MockInterface $http) use ($serverData, $diskData, $payload) {
+            $http->shouldReceive('request')
+                ->with('GET', 'linode/instances/'.$serverData['id'])
+                ->andReturn(
+                    FakeResponse::fake()->withJson($serverData)->toResponse()
+                );
+
+            $http->shouldReceive('request')
+                ->with('GET', 'linode/instances/'.$serverData['id'].'/disks/'.$diskData['id'])
+                ->andReturn(
+                    FakeResponse::fake()->withJson($diskData)->toResponse()
+                );
+
+            $http->shouldReceive('request')
+                ->with('POST', 'linode/instances/'.$serverData['id'].'/disks/'.$diskData['id'].'/resize', ['json' => $payload])
+                ->andReturn(
+                    FakeResponse::fake()->withJson([])->toResponse()
+                );
+        });
+
+        $linode = new Linode($api);
+        $manager = new DisksManager();
+        $server = $linode->get($serverData['id']);
+        $disk = $manager->get($diskData['id'])->from($server);
+
+        $this->assertTrue($manager->resize(2048)->on($disk));
     }
 }

@@ -18,7 +18,7 @@ class DistributionsTest extends TestCase
         $dists = Endpoints::distributionsList();
         $api = Api::fake(function (MockInterface $http) use ($dists) {
             $http->shouldReceive('request')
-                ->with('GET', 'linode/distributions', ['json' => []])
+                ->with('GET', 'linode/distributions')
                 ->andReturn(
                     FakeResponse::fake()->withJson($dists)->toResponse()
                 );
@@ -45,7 +45,7 @@ class DistributionsTest extends TestCase
     {
         $api = Api::fake(function (MockInterface $http) use ($data) {
             $http->shouldReceive('request')
-                ->with('GET', 'linode/distributions/'.$data['id'], ['json' => []])
+                ->with('GET', 'linode/distributions/'.$data['id'])
                 ->andReturn(
                     FakeResponse::fake()->withJson($data)->toResponse()
                 );

@@ -239,16 +239,16 @@
         },
         {
             "name": "tzurbaev/api-client",
-            "version": "0.9.1",
+            "version": "0.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tzurbaev/api-client.git",
-                "reference": "a405a944a3b797838e981e4ee356b03827a4e170"
+                "reference": "78cec644c2be7d732f1d826900e22f427de44f3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tzurbaev/api-client/zipball/a405a944a3b797838e981e4ee356b03827a4e170",
-                "reference": "a405a944a3b797838e981e4ee356b03827a4e170",
+                "url": "https://api.github.com/repos/tzurbaev/api-client/zipball/78cec644c2be7d732f1d826900e22f427de44f3c",
+                "reference": "78cec644c2be7d732f1d826900e22f427de44f3c",
                 "shasum": ""
             },
             "require": {
@@ -276,7 +276,7 @@
                 }
             ],
             "description": "API Client",
-            "time": "2017-09-17T07:19:06+00:00"
+            "time": "2017-09-17T12:19:03+00:00"
         }
     ],
     "packages-dev": [

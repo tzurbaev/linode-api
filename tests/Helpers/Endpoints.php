@@ -4,6 +4,200 @@ namespace Linode\Api\Tests\Helpers;
 
 class Endpoints
 {
+    public static function volumesList()
+    {
+        return [
+            'total_results' => 2,
+            'volumes' => [
+                static::volumeItem(['id' => 1]),
+                static::volumeItem(['id' => 2]),
+            ],
+            'total_pages' => 1,
+            'page' => 1,
+        ];
+    }
+
+    public static function volumeItem(array $replace = [])
+    {
+        return array_merge([
+            'id' => 123,
+            'label' => 'my-volume',
+            'status' => 'active',
+            'size' => 102400,
+            'region' => static::regionItem(),
+            'created' => '2017-06-20T11:21:01',
+            'updated' => '2017-06-20T11:21:01',
+        ], $replace);
+    }
+
+    public static function configsList()
+    {
+        return [
+            'total_results' => 2,
+            'configs' => [
+                static::configItem(['id' => 1]),
+                static::configItem(['id' => 2]),
+            ],
+            'total_pages' => 1,
+            'page' => 1,
+        ];
+    }
+
+    public static function configItem(array $replace = [])
+    {
+        return array_merge([
+            'id' => 804,
+            'comments' => 'Example Linode Configuration',
+            'created' => '2015-09-29T11:21:38.000Z',
+            'devtmpfs_automount' => true,
+            'disks' => [
+                'sda' => static::diskItem(),
+                'sdb' => 'null',
+                'sdc' => 'null',
+                'sdd' => 'null',
+                'sde' => 'null',
+                'sdf' => 'null',
+                'sdg' => 'null',
+                'sdh' => 'null',
+            ],
+            'helpers' => [
+                'disable_updatedb' => true,
+                'enable_distro_helper' => true,
+                'enable_modules_dep_helper' => true,
+                'enable_network_helper' => true,
+            ],
+            'initrd' => 'null',
+            'kernel' => [
+                'id' => 'linode/3.5.2-x86_64-linode26',
+                'description' => 'null',
+                'xen' => false,
+                'kvm' => true,
+                'label' => '3.5.2-x86_64-linode26',
+                'version' => '3.5.2',
+                'x64' => true,
+                'current' => true,
+                'deprecated' => false,
+                'latest' => true,
+            ],
+            'label' => 'My openSUSE 13.2 Profile',
+            'ram_limit' => 512,
+            'root_device' => '/dev/sda',
+            'root_device_ro' => false,
+            'run_level' => 'default',
+            'updated' => '2015-09-29T11:21:38.000Z',
+            'virt_mode' => 'paravirt',
+        ], $replace);
+    }
+
+    public static function backupsList()
+    {
+        return [
+            'total_results' => 2,
+            'backups' => [
+                [
+                    'daily' => static::backupItem(),
+                    'weekly' => static::backupItem(),
+                    'snapshot' => [
+                        'current' => static::backupItem(),
+                        'in_progress' => static::backupItem(),
+                    ],
+                ],
+            ],
+            'total_pages' => 1,
+            'page' => 1,
+        ];
+    }
+
+    public static function backupItem(array $replace = [])
+    {
+        return array_merge([
+            'id' => 123456,
+            'label' => 'A label for your snapshot',
+            'status' => 'successful',
+            'type' => 'snapshot',
+            'region' => static::regionItem(),
+            'created' => '2015-09-29T11:21:01',
+            'updated' => '2015-09-29T11:21:01',
+            'finished' => '2015-09-29T11:21:01',
+            'configs' => ['My Debian8 Profile'],
+            'disks' => [
+                'id' => 123456,
+                'label' => 'Ubuntu 16.04 Disk',
+                'status' => 'ok',
+                'size' => 1000,
+                'filesystem' => 'ext4',
+                'created' => '2015-09-29T11:21:01',
+                'updated' => '2015-09-29T11:21:01',
+            ],
+            'availability' => 'daily',
+        ], $replace);
+    }
+
+    public static function regionsList()
+    {
+        return [
+            'total_results' => 9,
+            'regions' => [
+                [
+                    'id' => 'us-south-1a',
+                    'country' => 'us',
+                    'label' => 'Dallas, TX',
+                ],
+                [
+                    'id' => 'us-west-1a',
+                    'country' => 'us',
+                    'label' => 'Fremont, CA',
+                ],
+                [
+                    'id' => 'us-southeast-1a',
+                    'country' => 'us',
+                    'label' => 'Atlanta, GA',
+                ],
+                [
+                    'id' => 'us-east-1a',
+                    'country' => 'us',
+                    'label' => 'Newark, NJ',
+                ],
+                [
+                    'id' => 'eu-west-1a',
+                    'country' => 'uk',
+                    'label' => 'London, UK',
+                ],
+                [
+                    'id' => 'ap-south-1a',
+                    'country' => 'sg',
+                    'label' => 'Singapore, SG',
+                ],
+                [
+                    'id' => 'eu-central-1a',
+                    'country' => 'de',
+                    'label' => 'Frankfurt, DE',
+                ],
+                [
+                    'id' => 'ap-northeast-1a',
+                    'country' => 'jp',
+                    'label' => 'Tokyo, JP',
+                ],
+                [
+                    'id' => 'ap-northeast-1b',
+                    'country' => 'jp',
+                    'label' => 'Tokyo 2, JP',
+                ],
+            ],
+            'total_pages' => 1,
+            'page' => 1,
+        ];
+    }
+
+    public static function regionItem(array $replace = [])
+    {
+        return array_merge([
+            'id' => 'eu-central-1a',
+            'country' => 'de',
+            'label' => 'Frankfurt, DE',
+        ], $replace);
+    }
+
     public static function disksList()
     {
         return [

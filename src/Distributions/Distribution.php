@@ -2,14 +2,9 @@
 
 namespace Linode\Api\Distributions;
 
-use Linode\Api\Api\LinodeApiResource;
+use Linode\Api\Api\ReadonlyLinodeApiResource;
 
-/**
- * Class Distribution
- *
- * @property string $id
- */
-class Distribution extends LinodeApiResource
+class Distribution extends ReadonlyLinodeApiResource
 {
     public function resourcePath()
     {

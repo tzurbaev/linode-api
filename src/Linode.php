@@ -101,8 +101,6 @@ class Linode implements \ArrayAccess, \Iterator, ApiResourceInterface
 
     protected function loadSingleServer(int $serverId)
     {
-        $response = null;
-
         try {
             $response = $this->getHttpClient()->request('GET', 'linode/instances/'.$serverId);
         } catch (RequestException $e) {
