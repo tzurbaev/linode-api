@@ -11,6 +11,14 @@ abstract class LinodeResourceCommand extends ResourceCommand
 {
     use NotSupportingResourceClassTrait;
 
+    /**
+     * Handle command response.
+     *
+     * @param ResponseInterface    $response
+     * @param ApiResourceInterface $owner
+     *
+     * @return bool
+     */
     public function handleResponse(ResponseInterface $response, ApiResourceInterface $owner)
     {
         return $response->getStatusCode() === 200;

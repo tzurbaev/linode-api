@@ -4,6 +4,119 @@ namespace Linode\Api\Tests\Helpers;
 
 class Endpoints
 {
+    public static function typesList()
+    {
+        return [
+            'total_results' => 3,
+            'types' => [
+                [
+                    'transfer' => 1000,
+                    'backup_price' => 2,
+                    'vcpus' => 1,
+                    'hourly_price' => 0.0075,
+                    'ram' => 1024,
+                    'monthly_price' => 5,
+                    'class' => 'nanode',
+                    'mbits_out' => 1000,
+                    'storage' => 20480,
+                    'id' => 'g5-nanode-1',
+                    'label' => 'Linode 1024',
+                ],
+                [
+                    'transfer' => 2000,
+                    'backup_price' => 2.5,
+                    'vcpus' => 1,
+                    'hourly_price' => 0.015,
+                    'ram' => 2048,
+                    'monthly_price' => 10,
+                    'class' => 'standard',
+                    'mbits_out' => 1000,
+                    'storage' => 30720,
+                    'id' => 'g5-standard-1',
+                    'label' => 'Linode 2048',
+                ],
+                [
+                    'transfer' => 3000,
+                    'backup_price' => 5,
+                    'vcpus' => 2,
+                    'hourly_price' => 0.03,
+                    'ram' => 4096,
+                    'monthly_price' => 20,
+                    'class' => 'standard',
+                    'mbits_out' => 1000,
+                    'storage' => 49152,
+                    'id' => 'g5-standard-2',
+                    'label' => 'Linode 4096',
+                ],
+            ],
+            'total_pages' => 1,
+            'page' => 1,
+        ];
+    }
+
+    public static function linodeTypeItem(array $replace = [])
+    {
+        return array_merge([
+            'transfer' => 3000,
+            'backup_price' => 5,
+            'vcpus' => 2,
+            'hourly_price' => 0.03,
+            'ram' => 4096,
+            'monthly_price' => 20,
+            'class' => 'standard',
+            'mbits_out' => 1000,
+            'storage' => 49152,
+            'id' => 'g5-standard-2',
+            'label' => 'Linode 4096',
+        ], $replace);
+    }
+
+    public static function ipAddressesList()
+    {
+        return [
+            'ipv4' => [
+                'public' => static::ipAddressV4Item(['type' => 'public']),
+                'private' => static::ipAddressV4Item(['type' => 'private']),
+                'shared' => static::ipAddressV4Item(['type' => 'shared']),
+            ],
+            'ipv6' => static::ipAddressV6Item(),
+        ];
+    }
+
+    public static function ipAddressV4Item(array $replace = [])
+    {
+        return array_merge([
+            'address' => '97.107.143.8',
+            'gateway' => '97.107.143.1',
+            'subnet_mask' => '255.255.255.0',
+            'prefix' => 24,
+            'type' => 'public',
+            'rdns' => null,
+            'linode_id' => 42,
+        ], $replace);
+    }
+
+    public static function ipAddressV6Item(array $replace = [])
+    {
+        return array_replace_recursive([
+            'addresses' => [
+                'address' => '2600:3c01::2:5001',
+                'gateway' => 'fe80::1',
+                'range' => '2600:3c01::2:5000',
+                'rdns' => 'example.org',
+                'prefix' => 116,
+                'subnet_mask' => 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:f000',
+                'type' => 'public',
+            ],
+            'slaac' => '2a01:7e00::f03c:91ff:fe96',
+            'link_local' => 'f300::f03c:91ff:fe96:46da',
+            'global' => [
+                'range' => '2600:3c01::2:5000/64',
+                'region' => 'us-east-1a',
+            ],
+        ], $replace);
+    }
+
     public static function volumesList()
     {
         return [
